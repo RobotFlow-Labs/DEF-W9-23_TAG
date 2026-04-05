@@ -386,13 +386,17 @@ def run_export(config: dict, device_str: str = "cuda:0"):
     export_safetensors(decompose_model, safe_dec_path)
 
     onnx_dec_path = export_dir / f"tag_decompose_{run_id}.onnx"
-    export_onnx(decompose_model, onnx_dec_path, device=device)
+    try:
+        export_onnx(decompose_model, onnx_dec_path, device=device)
 
-    trt_dec_fp16_path = export_dir / f"tag_decompose_{run_id}_fp16.engine"
-    export_tensorrt(onnx_dec_path, trt_dec_fp16_path, precision="fp16")
+        trt_dec_fp16_path = export_dir / f"tag_decompose_{run_id}_fp16.engine"
+        export_tensorrt(onnx_dec_path, trt_dec_fp16_path, precision="fp16")
 
-    trt_dec_fp32_path = export_dir / f"tag_decompose_{run_id}_fp32.engine"
-    export_tensorrt(onnx_dec_path, trt_dec_fp32_path, precision="fp32")
+        trt_dec_fp32_path = export_dir / f"tag_decompose_{run_id}_fp32.engine"
+        export_tensorrt(onnx_dec_path, trt_dec_fp32_path, precision="fp32")
+    except Exception as e:
+        print(f"  [WARN] Decompose ONNX export failed: {e}")
+        print("  [INFO] Forward model ONNX/TRT exports are the primary deliverable")
 
     # --- Summary ---
     print(f"\n{'=' * 60}")
