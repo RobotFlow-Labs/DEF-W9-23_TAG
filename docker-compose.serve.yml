@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  tag-serve:
+    build:
+      context: .
+      dockerfile: Dockerfile.serve
+    image: anima-tag:latest
+    container_name: anima-tag-serve
+    env_file: .env.serve
+    ports:
+      - "${ANIMA_SERVE_PORT:-8080}:${ANIMA_SERVE_PORT:-8080}"
+    volumes:
+      - /mnt/forge-data/models:/data/models:ro
+      - /mnt/artifacts-datai/exports/project_tag:/data/weights:ro
+      - /mnt/artifacts-datai/logs/project_tag:/data/logs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    restart: unless-stopped
+    profiles: ["serve"]
+
+  tag-ros2:
+    build:
+      context: .
+      dockerfile: Dockerfile.serve
+    image: anima-tag:latest
+    container_name: anima-tag-ros2
+    env_file: .env.serve
+    environment:
+      - ROS_DOMAIN_ID=0
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    volumes:
+      - /mnt/artifacts-datai/exports/project_tag:/data/weights:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    restart: unless-stopped
+    profiles: ["ros2"]
+
+  tag-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.serve
+    image: anima-tag:latest
+    container_name: anima-tag-api
+    env_file: .env.serve
+    ports:
+      - "${ANIMA_SERVE_PORT:-8080}:${ANIMA_SERVE_PORT:-8080}"
+    volumes:
+      - /mnt/artifacts-datai/exports/project_tag:/data/weights:ro
+    profiles: ["api"]
+
+  tag-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.serve
+    image: anima-tag:latest
+    container_name: anima-tag-test
+    env_file: .env.serve
+    command: ["python", "-m", "pytest", "tests/", "-x", "-v"]
+    volumes:
+      - ./tests:/app/tests:ro
+    profiles: ["test"]

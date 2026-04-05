@@ -1,0 +1,1 @@
+/mnt/forge-data/scripts/gpu-visor.sh

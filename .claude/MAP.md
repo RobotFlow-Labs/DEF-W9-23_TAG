@@ -177,3 +177,27 @@ All kernels have PyTorch CPU fallback. Install: `uv pip install /mnt/forge-data/
 | The Well | 15TB | https://github.com/PolymathicAI/the_well/ | Physics simulation, PDE solving, scientific ML |
 | ImageNet Full | 1.2TB | image-net.org (registration) | Classification, adversarial |
 | Waymo Open | ~1TB | waymo.com (gated) | Autonomous driving |
+
+## NEW DATASETS (Apr 5)
+
+| Dataset | Size | Path | Good For |
+|---------|------|------|----------|
+| VIVID++ Thermal | 47GB | /mnt/train-data/datasets/vivid_plus_plus/ | RGB-T fusion, thermal SLAM, defense thermal |
+| Argoverse 2 Motion | downloading | /mnt/forge-data/datasets/argoverse2/motion-forecasting/ | Trajectory prediction, adversarial driving |
+| DRFF-R2 Drone RF | 730 files | /mnt/forge-data/datasets/wave9/drff_r2/ | Drone RF fingerprinting |
+| SAR Ship Combined | 1.4GB | /mnt/forge-data/datasets/wave9/sar_ship/ | SAR ship detection |
+| LAT-BirdDrone | downloading | /mnt/forge-data/datasets/wave9/drones/ | Bird vs drone discrimination |
+| DroneVehicle-night | downloading | /mnt/forge-data/datasets/wave9/drones/ | Night drone-vehicle detection |
+| DroneRFa + Twin | downloading | /mnt/forge-data/datasets/wave9/drones/ | Drone RF authentication |
+| Air Combat RL | 69 files | /mnt/forge-data/datasets/wave9/aircombat/ | Multi-agent aerial combat |
+| MSTAR SAR | downloading | /mnt/forge-data/datasets/wave9/mstar/ | SAR target recognition |
+| BSTLD Traffic | downloading | /mnt/forge-data/datasets/wave8/bstld/ | Traffic light detection |
+| PASCAL VOC | downloading | /mnt/forge-data/datasets/wave9/VOC2012.tar | Object detection baseline |
+| LIBERO | on disk | /mnt/forge-data/datasets/lerobot--libero/ | VLA benchmark |
+| SmolLIBERO | on disk | /mnt/forge-data/datasets/HuggingFaceVLA--smol-libero/ | Small VLA benchmark |
+| MFNet RGB-T | 212MB | /mnt/forge-data/datasets/wave8/mfnet_rgbt/ | RGB-T segmentation |
+| PST900 RGB-T | 6.1GB | /mnt/forge-data/datasets/wave8/PST900/ | RGB-T segmentation |
+| FMB RGB-T | 2.2GB | /mnt/forge-data/datasets/wave8/FMB/ | RGB-T fusion |
+| CART RGB-T | 4.5GB | /mnt/forge-data/datasets/wave8/CART/ | RGB-T |
+| RGBT-CC | 908MB | /mnt/forge-data/datasets/RGBT-CC/ | RGB-T crowd counting |
+| VIVID++ DINOv2 cache | building | /mnt/forge-data/shared_infra/datasets/vivid_dinov2_features/ | Pre-computed thermal features |

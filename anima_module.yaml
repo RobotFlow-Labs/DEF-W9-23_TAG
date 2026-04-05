@@ -1,0 +1,108 @@
+name: project_tag
+version: 0.1.0
+description: >
+  TAG (Thermal Anti-Ghosting) — Universal computational thermal imaging framework.
+  Physics-based SLOT algorithm for hyperspectral thermal TeX decomposition.
+  Paper: "Universal computational thermal imaging overcoming the ghosting effect"
+  arXiv: 2604.01542
+
+authors:
+  - RobotFlow Labs <engineering@robotflowlabs.com>
+
+paper:
+  title: "Universal computational thermal imaging overcoming the ghosting effect"
+  arxiv: "2604.01542"
+  authors:
+    - Hongyi Xu
+    - Du Wang
+    - Chenjun Zhao
+    - Jiashuo Chen
+    - Jiale Lin
+    - Liqin Cao
+    - Yanfei Zhong
+    - Yiyuan She
+    - Fanglin Bao
+
+domain: defense
+category: thermal_imaging
+wave: 9
+
+capabilities:
+  - thermal_tex_decomposition
+  - hyperspectral_processing
+  - temperature_mapping
+  - emissivity_recovery
+  - texture_enhancement
+
+hardware:
+  min_vram_gb: 2
+  recommended_vram_gb: 8
+  gpu_count: 1
+  compute_type: optimization  # not NN training
+
+datasets:
+  required:
+    - name: tag_synthetic_lwir
+      path: /mnt/forge-data/datasets/tag_synthetic_lwir/
+      description: Synthetic hyperspectral thermal scenes
+  optional:
+    - name: nuaa_sirst
+      path: /mnt/forge-data/datasets/nuaa_sirst_yolo/
+      description: IR small target dataset for pipeline testing
+
+models:
+  pretrained: []  # TAG is optimization-based, no pretrained NN weights
+  downstream_eval:
+    - name: mediapipe
+      description: Face mesh for Task II evaluation
+    - name: mtcnn
+      description: Face detection for Task III evaluation
+
+docker:
+  serve_image: anima-tag:latest
+  base_image: ghcr.io/robotflow-labs/anima-serve:jazzy
+  ports:
+    api: 8080
+
+ros2:
+  node_name: tag_node
+  topics:
+    subscribe:
+      - name: /thermal/hyperspectral
+        type: sensor_msgs/msg/Image
+    publish:
+      - name: /tag/temperature
+        type: sensor_msgs/msg/Image
+      - name: /tag/texture
+        type: sensor_msgs/msg/Image
+      - name: /tag/emissivity
+        type: sensor_msgs/msg/Image
+
+api:
+  endpoints:
+    - method: POST
+      path: /decompose
+      description: Hyperspectral thermal TeX decomposition
+    - method: POST
+      path: /texture
+      description: High-fidelity texture extraction
+    - method: GET
+      path: /health
+      description: Health check
+    - method: GET
+      path: /ready
+      description: Readiness check
+    - method: GET
+      path: /info
+      description: Module information
+
+artifacts:
+  checkpoints: /mnt/artifacts-datai/checkpoints/project_tag/
+  logs: /mnt/artifacts-datai/logs/project_tag/
+  exports: /mnt/artifacts-datai/exports/project_tag/
+  reports: /mnt/artifacts-datai/reports/project_tag/
+  tensorboard: /mnt/artifacts-datai/tensorboard/project_tag/
+
+hf:
+  repo: ilessio-aiflowlab/project_tag
+  checkpoint_repo: ilessio-aiflowlab/project_tag-checkpoint

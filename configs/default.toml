@@ -1,0 +1,45 @@
+# TAG Default Configuration
+# Matches paper: "Universal computational thermal imaging overcoming the ghosting effect"
+
+[slot]
+n_knots = 20                   # Number of interior B-spline knots
+reg_lambda = 1.0               # Smoothness regularization weight
+max_iter = 100                 # Maximum L-BFGS iterations per scene
+tolerance = 1e-6               # Convergence tolerance (objective change)
+lr = 0.01                      # L-BFGS learning rate
+constraint_mu = 10.0           # Emissivity bound penalty weight
+
+[spectral]
+wavenum_min = 870.0            # cm^-1 (paper: 870)
+wavenum_max = 1269.0           # cm^-1 (paper: 1269)
+wavenum_step = 6.0             # cm^-1 (paper: 6)
+# Yields ~67 spectral channels
+
+[data]
+n_scenes = 100                 # Number of synthetic scenes for optimization
+n_eval_scenes = 20             # Number of scenes for evaluation
+height = 64                    # Scene height in pixels
+width = 64                     # Scene width in pixels
+n_materials = 5                # Number of material regions per scene
+t_range = [270.0, 330.0]       # Temperature range in Kelvin
+nedt = 0.03                    # Noise equivalent differential temperature (K)
+num_workers = 4
+pin_memory = true
+
+[training]
+seed = 42
+precision = "fp32"             # SLOT optimization is fp32 (not NN training)
+batch_size = 1                 # Process one scene at a time
+
+[checkpoint]
+output_dir = "/mnt/artifacts-datai/checkpoints/project_tag"
+save_every_n_scenes = 50       # Save results every N scenes
+keep_top_k = 2
+
+[logging]
+log_dir = "/mnt/artifacts-datai/logs/project_tag"
+tensorboard_dir = "/mnt/artifacts-datai/tensorboard/project_tag"
+
+[output]
+save_every_n_scenes = 50
+export_dir = "/mnt/artifacts-datai/exports/project_tag"

@@ -1,0 +1,48 @@
+# TAG Paper-Exact Configuration
+# Reproduces settings from arXiv 2604.01542
+
+[slot]
+n_knots = 20                   # Cubic B-spline with ~22 basis functions
+reg_lambda = 1.0               # Paper tests lambda in [1e-3, 1e6]; 1.0 is middle
+max_iter = 200                 # More iterations for paper-quality results
+tolerance = 1e-8               # Tighter convergence for paper metrics
+lr = 0.01                      # L-BFGS step size
+constraint_mu = 50.0           # Stronger constraint enforcement
+
+[spectral]
+wavenum_min = 870.0            # cm^-1 (Hypercam-LW range)
+wavenum_max = 1269.0           # cm^-1
+wavenum_step = 6.0             # cm^-1 (paper: "set to 6 cm^-1")
+
+[data]
+n_scenes = 200                 # More scenes for thorough evaluation
+n_eval_scenes = 50
+height = 256                   # Paper: 320x256 focal plane array
+width = 320                    # Paper resolution
+n_materials = 8                # More diverse materials
+t_range = [260.0, 340.0]       # Wider range matching outdoor scenes
+nedt = 0.03                    # Paper: NEDT ~ 30 mK
+num_workers = 4
+pin_memory = true
+
+[training]
+seed = 42
+precision = "fp32"
+batch_size = 1
+
+[checkpoint]
+output_dir = "/mnt/artifacts-datai/checkpoints/project_tag"
+save_every_n_scenes = 25
+keep_top_k = 2
+
+[logging]
+log_dir = "/mnt/artifacts-datai/logs/project_tag"
+tensorboard_dir = "/mnt/artifacts-datai/tensorboard/project_tag"
+
+[output]
+save_every_n_scenes = 25
+export_dir = "/mnt/artifacts-datai/exports/project_tag"
+
+# Lambda sweep for ablation (paper Figure showing lambda effect)
+[ablation]
+lambda_values = [0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0, 1000000.0]

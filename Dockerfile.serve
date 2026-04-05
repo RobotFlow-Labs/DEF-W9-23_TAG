@@ -1,0 +1,36 @@
+# TAG Dockerfile — 3-layer build from anima-serve:jazzy
+# Layer 1: anima-base (ROS2 Jazzy + CycloneDDS + uv)
+# Layer 2: anima-serve (FastAPI + AnimaNode + HF weight downloader)
+# Layer 3: TAG module (SLOT decomposer + thermal physics)
+
+FROM ghcr.io/robotflow-labs/anima-serve:jazzy AS base
+
+# Module metadata
+ENV ANIMA_MODULE_NAME=project_tag \
+    ANIMA_MODULE_VERSION=0.1.0 \
+    ANIMA_SERVE_PORT=8080
+
+WORKDIR /app
+
+# Copy project files
+COPY pyproject.toml ./
+COPY src/ ./src/
+COPY configs/ ./configs/
+
+# Install dependencies
+RUN uv pip install --system --no-cache-dir \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 && \
+    uv pip install --system --no-cache-dir \
+    numpy scipy pillow opencv-python-headless tqdm pydantic pydantic-settings \
+    safetensors onnx tomli tensorboard
+
+# Install TAG package
+RUN uv pip install --system --no-cache-dir -e .
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${ANIMA_SERVE_PORT}/health || exit 1
+
+EXPOSE ${ANIMA_SERVE_PORT}
+
+CMD ["python", "-m", "tag.serve"]

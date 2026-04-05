@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tag"
+version = "0.1.0"
+description = "TAG: Thermal Anti-Ghosting — Universal computational thermal imaging"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+authors = [
+    {name = "RobotFlow Labs", email = "engineering@robotflowlabs.com"},
+]
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pillow>=9.0.0",
+    "opencv-python>=4.7.0",
+    "tqdm>=4.65.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "tensorboard>=2.13.0",
+    "safetensors>=0.3.0",
+    "onnx>=1.14.0",
+    "tomli>=2.0.0; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+]
+eval = [
+    "mediapipe>=0.10.0",
+    "facenet-pytorch>=2.5.0",
+    "fer>=22.0.0",
+]
+
+[project.scripts]
+tag-train = "tag.train:main"
+tag-evaluate = "tag.evaluate:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tag"]
+
+[tool.uv]
+extra-index-url = ["https://download.pytorch.org/whl/cu128"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "C4"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

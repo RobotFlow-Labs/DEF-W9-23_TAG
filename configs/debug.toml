@@ -1,0 +1,43 @@
+# TAG Debug Configuration — Quick smoke test
+
+[slot]
+n_knots = 10                   # Fewer knots for speed
+reg_lambda = 1.0
+max_iter = 20                  # Just 20 iterations
+tolerance = 1e-4               # Looser convergence
+lr = 0.01
+constraint_mu = 10.0
+
+[spectral]
+wavenum_min = 870.0
+wavenum_max = 1269.0
+wavenum_step = 12.0            # Coarser grid: ~33 bands (faster)
+
+[data]
+n_scenes = 5                   # Just 5 scenes
+n_eval_scenes = 3
+height = 16                    # Tiny 16x16 scenes
+width = 16
+n_materials = 3
+t_range = [280.0, 320.0]
+nedt = 0.03
+num_workers = 0
+pin_memory = false
+
+[training]
+seed = 42
+precision = "fp32"
+batch_size = 1
+
+[checkpoint]
+output_dir = "/mnt/artifacts-datai/checkpoints/project_tag"
+save_every_n_scenes = 2
+keep_top_k = 1
+
+[logging]
+log_dir = "/mnt/artifacts-datai/logs/project_tag"
+tensorboard_dir = "/mnt/artifacts-datai/tensorboard/project_tag"
+
+[output]
+save_every_n_scenes = 2
+export_dir = "/mnt/artifacts-datai/exports/project_tag"

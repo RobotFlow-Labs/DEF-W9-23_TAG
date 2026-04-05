@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "Task(*)",
+      "NotebookEdit(*)",
+      "Skill(*)",
+      "Agent(*)",
+      "Bash(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)*",
+      "Bash(rm -rf ~)*",
+      "Bash(rm -rf /*)*",
+      "Bash(sudo rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Bash(mkfs *)",
+      "Bash(dd if=*of=/dev/*)",
+      "Bash(shutdown *)",
+      "Bash(reboot *)",
+      "Bash(:(){ :|:& };:)*",
+      "Bash(chmod 777 *)",
+      "Bash(killall *)"
+    ]
+  },
+  "attribution": {
+    "commit": "Built with ANIMA by Robot Flow Labs\n\nCo-Authored-By: ilessiorobotflowlabs <noreply@robotflowlabs.com>",
+    "pr": "Built with ANIMA by Robot Flow Labs\n\nCo-Authored-By: ilessiorobotflowlabs <noreply@robotflowlabs.com>"
+  }
+}
