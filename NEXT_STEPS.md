@@ -1,6 +1,6 @@
 # NEXT_STEPS.md
 > Last updated: 2026-04-05
-> MVP Readiness: 65%
+> MVP Readiness: 85%
 
 ## Done
 - [x] Read paper (arXiv 2604.01542) — TAG thermal anti-ghosting
@@ -8,37 +8,36 @@
 - [x] Created ASSETS.md with asset inventory
 - [x] Created PRD.md with 7-PRD build plan
 - [x] Created 7 PRD files (PRD-01 through PRD-07)
-- [x] Created tasks/INDEX.md with granular tasks
-- [x] Created pyproject.toml with hatchling backend
-- [x] Created TOML configs (default, paper, debug)
-- [x] PRD-01: Foundation verified — Planck, B-spline, forward model, 37 tests pass
+- [x] PRD-01: Foundation — Planck, B-spline, forward model, 37 tests pass
 - [x] PRD-02: CUDA-accelerated B-spline + Planck kernels (torch.compile, vectorized)
 - [x] PRD-03: Real thermal dataset adapters (VIVID++ 71K images, DroneVehicle-night)
 - [x] PRD-04: CUDA training pipeline with multi-dataset support
-- [x] PRD-06: Export pipeline (ONNX verified, TRT FP16/FP32 ready)
+- [x] PRD-05: Evaluation — SLOT vs HADAR on synthetic + VIVID++
+- [x] PRD-06: Export pipeline — pth + safetensors + ONNX + TRT FP16 + TRT FP32
 - [x] 53/53 tests pass (model, dataset, CUDA, export)
+- [x] CUDA kernels copied to /mnt/forge-data/shared_infra/cuda_extensions/tag_thermal_kernels/
+- [x] Training complete: 200 synthetic scenes (T_RMSE=11.95K) + 200 VIVID++ scenes (T_RMSE=5.75K)
+- [x] SLOT beats HADAR on both T_RMSE and e_MAE
 
-## In Progress
-- [ ] PRD-05: Run evaluation on synthetic + real thermal data
-- [ ] PRD-07: Docker + ROS2 integration
+## Training Results
+| Run       | Scenes | T_RMSE | e_MAE  | Time/scene |
+|-----------|--------|--------|--------|------------|
+| synthetic | 200    | 11.95K | 0.2666 | 0.18s      |
+| vivid++   | 200    | 5.75K  | 0.1508 | 0.16s      |
 
 ## TODO
-- [ ] Run multi-dataset training: synthetic → VIVID++ → DroneVehicle → combined
-- [ ] ONNX + TRT export with real optimized parameters
-- [ ] Copy CUDA kernels to /mnt/forge-data/shared_infra/cuda_extensions/
+- [ ] PRD-07: Docker build + health check test
 - [ ] Push to HuggingFace: ilessio-aiflowlab/project_tag
-- [ ] Docker build and health check
 - [ ] Git push to remote
+- [ ] Run larger training on full VIVID++ dataset (71K scenes)
+- [ ] DroneVehicle-night training (after unzip)
 
 ## Blocking
-- None — all code paths verified, datasets on disk
+- None
 
-## Downloads Needed
-- None — all datasets available locally
-
-## Available Datasets
-- Synthetic (generated at runtime, controlled ground truth)
-- VIVID++ thermal: /mnt/train-data/datasets/vivid_plus_plus/ (47GB, 71K 16-bit thermal images)
-- DroneVehicle-night: /mnt/forge-data/datasets/wave9/drones/DroneVehicle-night.zip (needs unzip)
-- nuScenes: /mnt/forge-data/datasets/nuscenes/ (479GB, night scenes)
-- NUAA-SIRST: /mnt/forge-data/datasets/nuaa_sirst_yolo/ (IR small targets)
+## Exports Available
+- /mnt/artifacts-datai/exports/project_tag/tag_forward_embedded.onnx (8.3KB)
+- /mnt/artifacts-datai/exports/project_tag/tag_forward_embedded_fp16.trt (57KB)
+- /mnt/artifacts-datai/exports/project_tag/tag_forward_embedded_fp32.trt (57KB)
+- /mnt/artifacts-datai/exports/project_tag/*.safetensors
+- /mnt/artifacts-datai/exports/project_tag/*.pth
