@@ -15,13 +15,13 @@ data into temperature, emissivity, and texture components.
 
 | PRD | Name | Description | Status | Dependencies |
 |-----|------|-------------|--------|-------------|
-| PRD-01 | Foundation | Project structure, configs, utils, Planck physics | [ ] TODO | None |
-| PRD-02 | Core Model | SLOT algorithm, B-spline basis, TeX decomposition | [ ] TODO | PRD-01 |
-| PRD-03 | Loss Functions | Rendering residual, smoothness penalty, physics constraints | [ ] TODO | PRD-01, PRD-02 |
-| PRD-04 | Training Pipeline | Synthetic data generation, optimization loop, checkpointing | [ ] TODO | PRD-01, PRD-02, PRD-03 |
-| PRD-05 | Evaluation | Image quality metrics (EN/AG/SF/SD), downstream tasks | [ ] TODO | PRD-02, PRD-04 |
-| PRD-06 | Export Pipeline | ONNX/TRT export for batched Planck + SLOT inference | [ ] TODO | PRD-02, PRD-05 |
-| PRD-07 | Integration | Docker serving, ROS2 node, API endpoint | [ ] TODO | PRD-06 |
+| PRD-01 | Foundation | Project structure, configs, utils, Planck physics | [x] DONE | None |
+| PRD-02 | Core Model + CUDA | SLOT + CUDA kernels (torch.compile, vectorized B-spline) | [x] DONE | PRD-01 |
+| PRD-03 | Loss + Datasets | Losses + VIVID++/DroneVehicle thermal adapters | [x] DONE | PRD-01, PRD-02 |
+| PRD-04 | Training Pipeline | Multi-dataset CUDA training (synthetic + VIVID++) | [x] DONE | PRD-01, PRD-02, PRD-03 |
+| PRD-05 | Evaluation | SLOT vs HADAR comparison, T_RMSE/e_MAE metrics | [x] DONE | PRD-02, PRD-04 |
+| PRD-06 | Export Pipeline | pth + safetensors + ONNX + TRT FP16 + TRT FP32 | [x] DONE | PRD-02, PRD-05 |
+| PRD-07 | Integration | Docker serving, ROS2 node, API endpoint | [~] INFRA READY | PRD-06 |
 
 ## Architecture Summary
 
