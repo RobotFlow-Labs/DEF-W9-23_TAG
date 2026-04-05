@@ -33,6 +33,10 @@ dev = [
     "pytest>=7.0.0",
     "ruff>=0.1.0",
 ]
+serve = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+]
 eval = [
     "mediapipe>=0.10.0",
     "facenet-pytorch>=2.5.0",
